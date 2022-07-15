@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Laika 0.18.1 + Helium Theme" />
-    <title>snickerdoodle - Better Cookies <a href="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13"><img src="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13/badge.svg" alt="Maven Central"></a></title>
+    <title>snickerdoodle - Advanced Cookie Management <a href="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13"><img src="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13/badge.svg" alt="Maven Central"></a></title>
     
       <meta name="author" content="Christopher Davenport"/>
     
@@ -61,7 +61,7 @@
       </div>
 
       <ul class="nav-list">
-        <li class="level1 active"><a href="#">snickerdoodle - Better Cookies <a href="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13"><img src="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13/badge.svg" alt="Maven Central"></a></a></li>
+        <li class="level1 active"><a href="#">snickerdoodle - Advanced Cookie Management <a href="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13"><img src="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13/badge.svg" alt="Maven Central"></a></a></li>
       </ul>
 
       <ul class="nav-list">
@@ -76,7 +76,7 @@
     <div id="container">
 
       <nav id="page-nav">
-        <p class="header"><a href="#">snickerdoodle - Better Cookies <a href="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13"><img src="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13/badge.svg" alt="Maven Central"></a></a></p>
+        <p class="header"><a href="#">snickerdoodle - Advanced Cookie Management <a href="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13"><img src="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13/badge.svg" alt="Maven Central"></a></a></p>
 
         <ul class="nav-list">
           <li class="level1"><a href="#quick-start">Quick Start</a></li>
@@ -88,7 +88,7 @@
 
       <main class="content">
 
-        <h1 id="snickerdoodle-better-cookies" class="title">snickerdoodle - Better Cookies <a href="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13"><img src="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13/badge.svg" alt="Maven Central"></a></h1>
+        <h1 id="snickerdoodle-advanced-cookie-management" class="title">snickerdoodle - Advanced Cookie Management <a href="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13"><img src="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13/badge.svg" alt="Maven Central"></a></h1>
         
         <h2 id="quick-start" class="section">Quick Start<a class="anchor-link right" href="#quick-start"><i class="icofont-laika">&#xef71;</i></a></h2>
         <p>To use snickerdoodle in an existing SBT project with Scala 2.13 or a later version, add the following dependencies to your
@@ -112,18 +112,18 @@
 </span><span class="comment">// jarResource: Resource[IO, CookieJar[IO]] = Bind(
 //   source = Eval(
 //     fa = Delay(
-//       thunk = cats.effect.IO$$$Lambda$10708/1928725527@7c83661a,
+//       thunk = cats.effect.IO$$$Lambda$9753/244654787@7fde0596,
 //       event = cats.effect.tracing.TracingEvent$StackTrace
 //     )
 //   ),
-//   fs = io.chrisdavenport.snickerdoodle.SnCookieJarBuilder$$Lambda$10710/1806229823@16a7ba82
+//   fs = io.chrisdavenport.snickerdoodle.SnCookieJarBuilder$$Lambda$9755/1076108753@457c5d97
 // )
 </span><span>
 </span><span class="comment">// Typical way you generally make a client
 </span><span class="keyword">val</span><span> </span><span class="identifier">clientResource</span><span> = </span><span class="type-name">EmberClientBuilder</span><span>.</span><span class="keyword">default</span><span>[</span><span class="type-name">IO</span><span>].</span><span class="identifier">build</span><span>
 </span><span class="comment">// clientResource: Resource[IO, org.http4s.client.Client[IO]] = Bind(
-//   source = Pure(a = fs2.io.net.NetworkCompanionPlatform$$anon$1@76a873e5),
-//   fs = org.http4s.ember.client.EmberClientBuilder$$Lambda$10745/625238997@730863f8
+//   source = Pure(a = fs2.io.net.NetworkCompanionPlatform$$anon$1@2cb1a411),
+//   fs = org.http4s.ember.client.EmberClientBuilder$$Lambda$9790/2018789278@71079bb9
 // )
 </span><span>
 
@@ -136,15 +136,15 @@
 //     source = Bind(
 //       source = Eval(
 //         fa = Delay(
-//           thunk = cats.effect.IO$$$Lambda$10708/1928725527@7c83661a,
+//           thunk = cats.effect.IO$$$Lambda$9753/244654787@7fde0596,
 //           event = cats.effect.tracing.TracingEvent$StackTrace
 //         )
 //       ),
-//       fs = io.chrisdavenport.snickerdoodle.SnCookieJarBuilder$$Lambda$10710/1806229823@16a7ba82
+//       fs = io.chrisdavenport.snickerdoodle.SnCookieJarBuilder$$Lambda$9755/1076108753@457c5d97
 //     ),
-//     fs = cats.FlatMap$$Lambda$10746/306710867@ef342f8
+//     fs = cats.FlatMap$$Lambda$9791/1941050191@70254cc8
 //   ),
-//   fs = cats.Monad$$Lambda$10703/189865749@3e54e77d
+//   fs = cats.Monad$$Lambda$9748/306435456@3d32db26
 // )</span></code></pre>
 
         <hr style="margin-top: 30px"/>
