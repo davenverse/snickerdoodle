@@ -80,3 +80,8 @@ lazy val examples = crossProject(JVMPlatform, JSPlatform)
 lazy val site = project.in(file("site"))
   .enablePlugins(TypelevelSitePlugin)
   .dependsOn(core.jvm)
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.http4s"                  %%% "http4s-ember-client"        % http4sV,
+    )
+  )

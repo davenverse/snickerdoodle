@@ -10,3 +10,28 @@ libraryDependencies ++= Seq(
   "io.chrisdavenport" %% "snickerdoodle" % "<version>"
 )
 ```
+
+## How to use
+
+```scala mdoc
+import cats.syntax.all._
+import cats.effect._
+import fs2.io.file.Path
+import io.chrisdavenport.snickerdoodle._
+import org.http4s.ember.client.EmberClientBuilder
+import org.http4s.client.middleware.CookieJar
+
+// Create the cookie jar like so
+val jarResource = SnCookieJarBuilder.default[IO]
+  .withSqlitePersistence(Path("sample.sqlite"))
+  .build
+
+// Typical way you generally make a client
+val clientResource = EmberClientBuilder.default[IO].build
+
+
+val combined = (jarResource, clientResource).mapN{
+  // Apply it to a client
+  case (jar, client) => CookieJar(jar)(client)
+}
+```
