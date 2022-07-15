@@ -80,6 +80,7 @@
 
         <ul class="nav-list">
           <li class="level1"><a href="#quick-start">Quick Start</a></li>
+          <li class="level1"><a href="#how-to-use">How to use</a></li>
         </ul>
 
         <p class="footer"></p>
@@ -95,6 +96,56 @@
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> ++= </span><span class="type-name">Seq</span><span>(
   </span><span class="string-literal">&quot;io.chrisdavenport&quot;</span><span> %% </span><span class="string-literal">&quot;snickerdoodle&quot;</span><span> % </span><span class="string-literal">&quot;&lt;version&gt;&quot;</span><span>
 )</span></code></pre>
+        
+        <h2 id="how-to-use" class="section">How to use<a class="anchor-link right" href="#how-to-use"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">fs2</span><span>.</span><span class="identifier">io</span><span>.</span><span class="identifier">file</span><span>.</span><span class="type-name">Path</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">io</span><span>.</span><span class="identifier">chrisdavenport</span><span>.</span><span class="identifier">snickerdoodle</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">ember</span><span>.</span><span class="identifier">client</span><span>.</span><span class="type-name">EmberClientBuilder</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">client</span><span>.</span><span class="identifier">middleware</span><span>.</span><span class="type-name">CookieJar</span><span>
+
+</span><span class="comment">// Create the cookie jar like so
+</span><span class="keyword">val</span><span> </span><span class="identifier">jarResource</span><span> = </span><span class="type-name">SnCookieJarBuilder</span><span>.</span><span class="keyword">default</span><span>[</span><span class="type-name">IO</span><span>]
+  .</span><span class="identifier">withSqlitePersistence</span><span>(</span><span class="type-name">Path</span><span>(</span><span class="string-literal">&quot;sample.sqlite&quot;</span><span>))
+  .</span><span class="identifier">build</span><span>
+</span><span class="comment">// jarResource: Resource[IO, CookieJar[IO]] = Bind(
+//   source = Eval(
+//     fa = Delay(
+//       thunk = cats.effect.IO$$$Lambda$10708/1928725527@7c83661a,
+//       event = cats.effect.tracing.TracingEvent$StackTrace
+//     )
+//   ),
+//   fs = io.chrisdavenport.snickerdoodle.SnCookieJarBuilder$$Lambda$10710/1806229823@16a7ba82
+// )
+</span><span>
+</span><span class="comment">// Typical way you generally make a client
+</span><span class="keyword">val</span><span> </span><span class="identifier">clientResource</span><span> = </span><span class="type-name">EmberClientBuilder</span><span>.</span><span class="keyword">default</span><span>[</span><span class="type-name">IO</span><span>].</span><span class="identifier">build</span><span>
+</span><span class="comment">// clientResource: Resource[IO, org.http4s.client.Client[IO]] = Bind(
+//   source = Pure(a = fs2.io.net.NetworkCompanionPlatform$$anon$1@76a873e5),
+//   fs = org.http4s.ember.client.EmberClientBuilder$$Lambda$10745/625238997@730863f8
+// )
+</span><span>
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">combined</span><span> = (</span><span class="identifier">jarResource</span><span>, </span><span class="identifier">clientResource</span><span>).</span><span class="identifier">mapN</span><span>{
+  </span><span class="comment">// Apply it to a client
+</span><span>  </span><span class="keyword">case</span><span> (</span><span class="identifier">jar</span><span>, </span><span class="identifier">client</span><span>) =&gt; </span><span class="type-name">CookieJar</span><span>(</span><span class="identifier">jar</span><span>)(</span><span class="identifier">client</span><span>)
+}
+</span><span class="comment">// combined: Resource[IO, org.http4s.client.Client[IO[A]]] = Bind(
+//   source = Bind(
+//     source = Bind(
+//       source = Eval(
+//         fa = Delay(
+//           thunk = cats.effect.IO$$$Lambda$10708/1928725527@7c83661a,
+//           event = cats.effect.tracing.TracingEvent$StackTrace
+//         )
+//       ),
+//       fs = io.chrisdavenport.snickerdoodle.SnCookieJarBuilder$$Lambda$10710/1806229823@16a7ba82
+//     ),
+//     fs = cats.FlatMap$$Lambda$10746/306710867@ef342f8
+//   ),
+//   fs = cats.Monad$$Lambda$10703/189865749@3e54e77d
+// )</span></code></pre>
 
         <hr style="margin-top: 30px"/>
         <footer style="font-size: 90%; text-align: center">
