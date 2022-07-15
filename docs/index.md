@@ -1,11 +1,13 @@
 # snickerdoodle - Advanced Cookie Management [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13)
 
+Snickerdoodle handles cookie persistence between application runs, it has a fully in memory implementation,
+and will follow RFC 6265 correctly. Meaning it works very similarly to how your browser manages its cookies. Snickerdoodle is a bit more opinionated than the http4s implementation.
+
 Cookies are a persistent stateful resource between a client and server.
 However, maybe you run into an unexpected error, or someone sets a remember me token for a super long time, 
 or maybe  you would just prefer to avoid work if you can because you have the information already available.
 
-Snickerdoodle handles cookie persistence between application runs, it has a fully in memory implementation,
-and will follow RFC 6265 correctly. Meaning it works very similarly to how your browser manages its cookies. Snickerdoodle is a bit more opinionated then the http4s implementation.
+Snickerdoodle is the cookie for you.
 
 ## Quick Start
 
