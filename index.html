@@ -89,11 +89,12 @@
       <main class="content">
 
         <h1 id="snickerdoodle-advanced-cookie-management" class="title">snickerdoodle - Advanced Cookie Management <a href="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13"><img src="https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13/badge.svg" alt="Maven Central"></a></h1>
+        <p>Snickerdoodle handles cookie persistence between application runs, it has a fully in memory implementation,
+        and will follow RFC 6265 correctly. Meaning it works very similarly to how your browser manages its cookies. Snickerdoodle is a bit more opinionated than the http4s implementation.</p>
         <p>Cookies are a persistent stateful resource between a client and server.
         However, maybe you run into an unexpected error, or someone sets a remember me token for a super long time, 
         or maybe  you would just prefer to avoid work if you can because you have the information already available.</p>
-        <p>Snickerdoodle handles cookie persistence between application runs, it has a fully in memory implementation,
-        and will follow RFC 6265 correctly. Meaning it works very similarly to how your browser manages its cookies. Snickerdoodle is a bit more opinionated then the http4s implementation.</p>
+        <p>Snickerdoodle is the cookie for you.</p>
         
         <h2 id="quick-start" class="section">Quick Start<a class="anchor-link right" href="#quick-start"><i class="icofont-laika">&#xef71;</i></a></h2>
         <p>To use snickerdoodle in an existing SBT project with Scala 2.13 or a later version, add the following dependencies to your
@@ -117,18 +118,18 @@
 </span><span class="comment">// jarResource: Resource[IO, CookieJar[IO]] = Bind(
 //   source = Eval(
 //     fa = Delay(
-//       thunk = cats.effect.IO$$$Lambda$9787/316941840@ea1c06d,
+//       thunk = cats.effect.IO$$$Lambda$9763/1674203159@514f00c9,
 //       event = cats.effect.tracing.TracingEvent$StackTrace
 //     )
 //   ),
-//   fs = io.chrisdavenport.snickerdoodle.SnCookieJarBuilder$$Lambda$9789/721619744@319485da
+//   fs = io.chrisdavenport.snickerdoodle.SnCookieJarBuilder$$Lambda$9765/46310383@28b02d60
 // )
 </span><span>
 </span><span class="comment">// Typical way you generally make a client
 </span><span class="keyword">val</span><span> </span><span class="identifier">clientResource</span><span> = </span><span class="type-name">EmberClientBuilder</span><span>.</span><span class="keyword">default</span><span>[</span><span class="type-name">IO</span><span>].</span><span class="identifier">build</span><span>
 </span><span class="comment">// clientResource: Resource[IO, org.http4s.client.Client[IO]] = Bind(
-//   source = Pure(a = fs2.io.net.NetworkCompanionPlatform$$anon$1@3bd87999),
-//   fs = org.http4s.ember.client.EmberClientBuilder$$Lambda$9824/1296708376@1760c82
+//   source = Pure(a = fs2.io.net.NetworkCompanionPlatform$$anon$1@f68d024),
+//   fs = org.http4s.ember.client.EmberClientBuilder$$Lambda$9800/1328081529@73f0b2c0
 // )
 </span><span>
 
@@ -141,15 +142,15 @@
 //     source = Bind(
 //       source = Eval(
 //         fa = Delay(
-//           thunk = cats.effect.IO$$$Lambda$9787/316941840@ea1c06d,
+//           thunk = cats.effect.IO$$$Lambda$9763/1674203159@514f00c9,
 //           event = cats.effect.tracing.TracingEvent$StackTrace
 //         )
 //       ),
-//       fs = io.chrisdavenport.snickerdoodle.SnCookieJarBuilder$$Lambda$9789/721619744@319485da
+//       fs = io.chrisdavenport.snickerdoodle.SnCookieJarBuilder$$Lambda$9765/46310383@28b02d60
 //     ),
-//     fs = cats.FlatMap$$Lambda$9825/1886785487@4c69064b
+//     fs = cats.FlatMap$$Lambda$9801/338489700@3841eaf4
 //   ),
-//   fs = cats.Monad$$Lambda$9782/475379231@7dca1158
+//   fs = cats.Monad$$Lambda$9758/1853331155@4ed1298e
 // )</span></code></pre>
 
         <hr style="margin-top: 30px"/>
