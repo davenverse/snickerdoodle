@@ -1,5 +1,12 @@
 # snickerdoodle - Advanced Cookie Management [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/snickerdoodle_2.13)
 
+Cookies are a persistent stateful resource between a client and server.
+However, maybe you run into an unexpected error, or someone sets a remember me token for a super long time, 
+or maybe  you would just prefer to avoid work if you can because you have the information already available.
+
+Snickerdoodle handles cookie persistence between application runs, it has a fully in memory implementation,
+and will follow RFC 6265 correctly. Meaning it works very similarly to how your browser manages its cookies. Snickerdoodle is a bit more opinionated then the http4s implementation.
+
 ## Quick Start
 
 To use snickerdoodle in an existing SBT project with Scala 2.13 or a later version, add the following dependencies to your
