@@ -71,6 +71,10 @@ lazy val examples = crossProject(JVMPlatform, JSPlatform)
       "org.http4s"                  %%% "http4s-ember-client"        % http4sV,
     )
   )
+  .jsSettings(
+    scalaJSUseMainModuleInitializer := true,
+    scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule)},
+  )
 
 lazy val site = project.in(file("site"))
   .enablePlugins(TypelevelSitePlugin)

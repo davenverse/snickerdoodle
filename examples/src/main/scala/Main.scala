@@ -12,12 +12,14 @@ import io.chrisdavenport.snickerdoodle._
 
 object Main extends IOApp {
   def run(args: List[String]): IO[ExitCode] = {
-    (SnCookieJarBuilder.default[IO]
-      .withSqlitePersistence(fs2.io.file.Path("sample.sqlite"))
-      .expert
-      .buildWithState,
+    (
+      SnCookieJarBuilder.default[IO]
+        .withSqlitePersistence(fs2.io.file.Path("sample.sqlite")) // Comment this line for JS
+        .expert // Usually you would just use `build` we use buildWithState to expose the internals
+        .buildWithState,
       EmberClientBuilder.default[IO].build
-    ).mapN{ case ((cj, state), c) => (CookieJar(cj)(c), state)}.use{ case (client,state) =>
+    ).mapN{ case ((cj, state), c) => (CookieJar(cj)(c), state)} // Application uses the Http4s Middleware
+    .use{ case (client,state) =>
       IO.println("Cookie Walkthrough") >>
       IO.println("") >>
       IO.println("Initial State") >>
@@ -45,11 +47,13 @@ object Main extends IOApp {
     }  >>
     {
       IO.println("") >> 
+      // Comment this block for JS
       IO.println("As well as persisted to disk in the sqlite database.") >>
       SnCookiePersistence.sqlite[IO](fs2.io.file.Path("sample.sqlite"))
         .getAll
         .flatTap(_.traverse_(Console[IO].println(_))) >>
       IO.println("") >>
+      //
       IO.println("Run Again, and you will see these cookies are restored in the initial state") >>
       IO.println("")
     }
