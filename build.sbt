@@ -9,11 +9,11 @@ ThisBuild / developers := List(
 ThisBuild / tlCiReleaseBranches := Seq("main")
 ThisBuild / tlSonatypeUseLegacyHost := true
 
-
+val Scala213 = "2.13.7"
 val Scala3 = "3.1.1"
 
-ThisBuild / crossScalaVersions := Seq("2.13.7", Scala3)
-ThisBuild / scalaVersion := Scala3
+ThisBuild / crossScalaVersions := Seq(Scala213, Scala3)
+ThisBuild / scalaVersion := Scala213
 
 ThisBuild / testFrameworks += new TestFramework("munit.Framework")
 
