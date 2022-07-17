@@ -37,6 +37,8 @@ lazy val core = crossProject(JVMPlatform, JSPlatform)
   .settings(
     name := "snickerdoodle",
 
+    mimaPreviousArtifacts := Set(),
+
     libraryDependencies ++= Seq(
       "org.typelevel"               %%% "cats-core"                  % catsV,
       "org.typelevel"               %%% "cats-effect"                % catsEffectV,
