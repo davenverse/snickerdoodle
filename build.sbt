@@ -24,6 +24,7 @@ val catsEffectV = "3.3.13"
 val fs2V = "3.2.7"
 val http4sV = "0.23.11"
 val doobieV = "1.0.0-RC2"
+val publicSuffixV = "0.0.1"
 val munitCatsEffectV = "1.0.7"
 
 
@@ -45,15 +46,16 @@ lazy val core = crossProject(JVMPlatform, JSPlatform)
 
       "co.fs2"                      %%% "fs2-core"                   % fs2V,
       "co.fs2"                      %%% "fs2-io"                     % fs2V,
-      "org.http4s"                  %%% "http4s-client"        % http4sV,
-      "io.chrisdavenport"           %%% "publicsuffix" % "0.0.1",
+      "org.http4s"                  %%% "http4s-client"               % http4sV,
+      "io.chrisdavenport"           %%% "publicsuffix"                  % publicSuffixV,
+      "io.chrisdavenport"           %%% "publicsuffix-retrieval-client" % publicSuffixV % Test,
       "org.typelevel"               %%% "munit-cats-effect-3"        % munitCatsEffectV         % Test,
     )
   )
   .jsSettings(
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule)},
     libraryDependencies ++= Seq(
-      "io.chrisdavenport" %%% "publicsuffix-retrieval-client" % "0.0.1",
+      "io.chrisdavenport" %%% "publicsuffix-retrieval-client" % publicSuffixV,
     )
     // TODO Actually Implement with this
     // npmDependencies ++= Seq(
