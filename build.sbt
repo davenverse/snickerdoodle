@@ -44,12 +44,15 @@ lazy val core = crossProject(JVMPlatform, JSPlatform)
       "co.fs2"                      %%% "fs2-core"                   % fs2V,
       "co.fs2"                      %%% "fs2-io"                     % fs2V,
       "org.http4s"                  %%% "http4s-client"        % http4sV,
-
+      "io.chrisdavenport"           %%% "publicsuffix" % "0.0.1",
       "org.typelevel"               %%% "munit-cats-effect-3"        % munitCatsEffectV         % Test,
     )
   )
   .jsSettings(
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule)},
+    libraryDependencies ++= Seq(
+      "io.chrisdavenport" %%% "publicsuffix-retrieval-client" % "0.0.1",
+    )
     // TODO Actually Implement with this
     // npmDependencies ++= Seq(
     //   "sqlite" -> "4.0.1",
