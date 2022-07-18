@@ -56,6 +56,7 @@ lazy val core = crossProject(JVMPlatform, JSPlatform)
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule)},
     libraryDependencies ++= Seq(
       "io.chrisdavenport" %%% "publicsuffix-retrieval-client" % publicSuffixV,
+      "io.chrisdavenport" %%% "sqlite-sjs" % "0.0.1",
     )
     // TODO Actually Implement with this
     // npmDependencies ++= Seq(
@@ -79,6 +80,7 @@ lazy val examples = crossProject(JVMPlatform, JSPlatform)
       "org.http4s"                  %%% "http4s-ember-client"        % http4sV,
     )
   )
+  .jsConfigure { project => project.enablePlugins(ScalaJSBundlerPlugin) }
   .jsSettings(
     scalaJSUseMainModuleInitializer := true,
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule)},

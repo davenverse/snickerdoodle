@@ -20,7 +20,7 @@ final class SnCookieJarBuilder[F[_]: Async] private (
   def withSupervisor(s: Supervisor[F]) = copy(supervisorO = s.some)
 
   def withSqlitePersistence(path: Path) = 
-    copy(persistenceO = SnCookiePersistence.sqlite(path).pure[Resource[F, *]].some)
+    copy(persistenceO = SnCookiePersistence.sqlite(path).some)
   def withPersistence(c: SnCookiePersistence[F]) = 
     copy(persistenceO = c.pure[Resource[F, *]].some)
 

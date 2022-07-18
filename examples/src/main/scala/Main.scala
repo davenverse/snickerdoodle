@@ -14,7 +14,7 @@ object Main extends IOApp {
   def run(args: List[String]): IO[ExitCode] = {
     (
       SnCookieJarBuilder.default[IO]
-        .withSqlitePersistence(fs2.io.file.Path("sample.sqlite")) // Comment this line for JS
+        .withSqlitePersistence(fs2.io.file.Path("sample.sqlite"))
         .expert // Usually you would just use `build` we use buildWithState to expose the internals
         .buildWithState,
       EmberClientBuilder.default[IO].build
@@ -47,10 +47,10 @@ object Main extends IOApp {
     }  >>
     {
       IO.println("") >> 
-      // Comment this block for JS
       IO.println("As well as persisted to disk in the sqlite database.") >>
-      SnCookiePersistence.sqlite[IO](fs2.io.file.Path("sample.sqlite"))
-        .getAll
+      SnCookiePersistence.sqlite[IO](fs2.io.file.Path("sample.sqlite")).use(
+        _.getAll
+      )
         .flatTap(_.traverse_(Console[IO].println(_))) >>
       IO.println("") >>
       //

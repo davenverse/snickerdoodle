@@ -17,5 +17,5 @@ trait SnCookiePersistence[F[_]]{
 
 
 object SnCookiePersistence {
-  def sqlite[F[_]: Async](path: fs2.io.file.Path): SnCookiePersistence[F] = persistence.Sqlite[F](path)
+  def sqlite[F[_]: Async](path: fs2.io.file.Path): Resource[F, SnCookiePersistence[F]] = persistence.SqlitePersistence[F](path)
 }

@@ -1,0 +1,3 @@
+package io.chrisdavenport.snickerdoodle.persistence
+
+object SqlitePersistence extends SqlitePersistencePlatform
