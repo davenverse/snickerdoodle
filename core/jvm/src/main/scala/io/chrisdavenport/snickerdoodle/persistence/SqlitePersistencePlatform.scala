@@ -52,7 +52,7 @@ trait SqlitePersistencePlatform { self =>
   }
 
   private[snickerdoodle] def create[F[_]: MonadCancelThrow](xa: Transactor[F])(cookie: SnCookie): F[Int] = {
-    Update[SnCookie.RawSnCookie]("INSERT OR REPLACE INTO cookies values (?,?,?,?,?,?,?,?,?,?,?,?,?)")
+    Update[SnCookie.RawSnCookie]("INSERT OR REPLACE INTO cookies (name, value, domain, path, expiry, lastAccessed, creationTime, isSecure, isHttpOnly, isHostOnly, sameSite, scheme, extension) values (?,?,?,?,?,?,?,?,?,?,?,?,?)")
       .run(SnCookie.toRaw(cookie))
       .transact(xa)
   }
@@ -76,7 +76,7 @@ trait SqlitePersistencePlatform { self =>
       .transact(xa)
   }
 
-  def apply[F[_]: Async](path: fs2.io.file.Path): SnCookiePersistence[F] = {
+  def apply[F[_]: Async](path: fs2.io.file.Path): Resource[F, SnCookiePersistence[F]] = {
     val xa = transactor[F](path)
     new SnCookiePersistence[F] {
       def updateLastAccessed(key: SnCookie.SnCookieKey, lastAccessed: Long): F[Unit] =
@@ -96,6 +96,6 @@ trait SqlitePersistencePlatform { self =>
       
       def getAll: F[List[SnCookie]] = self.selectAll(xa)
       
-    }
+    }.pure[Resource[F, *]]
   }
 }
