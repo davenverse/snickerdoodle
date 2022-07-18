@@ -12,7 +12,8 @@ private[snickerdoodle] object SnCookieJar {
   private[snickerdoodle] class Http4sPersistenceCookieJarImpl[F[_]: Concurrent: Clock](
     persistence: SnCookiePersistence[F],
     supervisor: Supervisor[F],
-    ref: Ref[F, Map[SnCookie.SnCookieKey, SnCookie]]
+    ref: Ref[F, Map[SnCookie.SnCookieKey, SnCookie]],
+    isPublicSuffix: String => Boolean
   ) extends CookieJar[F]{
     def evictExpired: F[Unit] = for {
       now <- HttpDate.current[F].map(_.epochSecond)
@@ -29,7 +30,7 @@ private[snickerdoodle] object SnCookieJar {
         now <- HttpDate.current[F].map(_.epochSecond)
         map = cookies.foldLeft(Map[SnCookie.SnCookieKey, SnCookie]()){
           case (m, (rc, uri)) =>
-            val snO = SnCookie.build(rc, uri, now).map( sn => 
+            val snO = SnCookie.build(rc, uri, now, isPublicSuffix).map( sn => 
               (SnCookie.SnCookieKey.fromCookie(sn), sn)
             )
             snO.fold(m)(v => m + v)
@@ -58,7 +59,8 @@ private[snickerdoodle] object SnCookieJar {
 
   // TODO Make this into http4s proper
   private[snickerdoodle] class Http4sMemoryCookieJarImpl[F[_]: Concurrent: Clock](
-    ref: Ref[F, Map[SnCookie.SnCookieKey, SnCookie]]
+    ref: Ref[F, Map[SnCookie.SnCookieKey, SnCookie]],
+    isPublicSuffix: String => Boolean
   ) extends CookieJar[F]{
     def evictExpired: F[Unit] = for {
       now <- HttpDate.current[F]
@@ -72,7 +74,7 @@ private[snickerdoodle] object SnCookieJar {
         now <- HttpDate.current[F].map(_.epochSecond)
         map = cookies.foldLeft(Map[SnCookie.SnCookieKey, SnCookie]()){
           case (m, (rc, uri)) =>
-            val snO = SnCookie.build(rc, uri, now).map( sn => 
+            val snO = SnCookie.build(rc, uri, now, isPublicSuffix).map( sn => 
               (SnCookie.SnCookieKey.fromCookie(sn), sn)
             )
             snO.fold(m)(v => m + v)

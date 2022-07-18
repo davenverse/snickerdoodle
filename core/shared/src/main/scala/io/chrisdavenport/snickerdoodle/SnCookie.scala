@@ -23,10 +23,10 @@ case class SnCookie(
 )
 object SnCookie {
 
-  def build(rc: ResponseCookie, uri: Uri, now: Long): Option[SnCookie] = {
+  def build(rc: ResponseCookie, uri: Uri, now: Long, isPublicSuffix: String => Boolean): Option[SnCookie] = {
     // TODO filter public suffixes
     // https://publicsuffix.org
-    val bail = rc.domain.map(d => !SnCookieJar.hostMatch(d, false, uri)).getOrElse(false)
+    val bail = rc.domain.map(d => isPublicSuffix(d) || !SnCookieJar.hostMatch(d, false, uri)).getOrElse(false)
     if (bail) Option.empty
     else uri.host.flatMap{ host => 
       val persist = rc.maxAge.isDefined || rc.expires.isDefined
