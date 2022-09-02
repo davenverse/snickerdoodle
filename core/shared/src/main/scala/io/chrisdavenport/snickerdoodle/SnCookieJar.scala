@@ -12,18 +12,25 @@ private[snickerdoodle] object SnCookieJar {
   private[snickerdoodle] class Http4sPersistenceCookieJarImpl[F[_]: Concurrent: Clock](
     persistence: SnCookiePersistence[F],
     supervisor: Supervisor[F],
+    synchronousPersistence: Boolean,
     ref: Ref[F, Map[SnCookie.SnCookieKey, SnCookie]],
     isPublicSuffix: String => Boolean
   ) extends CookieJar[F]{
+
+    def persist[A](fa: F[A]): F[Unit] = {
+      if (synchronousPersistence) fa.void
+      else supervisor.supervise(fa).void
+    }
+
     def evictExpired: F[Unit] = for {
       now <- HttpDate.current[F].map(_.epochSecond)
       _ <- ref.update(_.filter(t => now <= t._2.expiry))
-      _ <- supervisor.supervise(persistence.clearExpired(now))
+      _ <- persist(persistence.clearExpired(now))
     } yield ()
     
     def evictAll: F[Unit] = 
-      ref.set(Map.empty) >> 
-      persistence.clear
+      ref.set(Map.empty) >>
+      persist(persistence.clear)
     
     def addCookies[G[_]: Foldable](cookies: G[(ResponseCookie, Uri)]): F[Unit] = 
       for {
@@ -36,7 +43,7 @@ private[snickerdoodle] object SnCookieJar {
             snO.fold(m)(v => m + v)
         }
         _ <- ref.update(m => m ++ map)
-        _ <- supervisor.supervise(map.toList.traverse_{ case (_, c) => if (c.persist) persistence.create(c) else Applicative[F].unit}).void
+        _ <- persist(map.toList.traverse_{ case (_, c) => if (c.persist) persistence.create(c) else Applicative[F].unit}).void
       } yield ()
     
     def enrichRequest[G[_]](r: Request[G]): F[Request[G]] = for {
@@ -51,7 +58,7 @@ private[snickerdoodle] object SnCookieJar {
         }
         (m ++ updatedMap, filtered)
       }
-      _ <- supervisor.supervise(cookies.traverse_(c => if (c.persist) persistence.updateLastAccessed(SnCookie.SnCookieKey.fromCookie(c),  c.lastAccessed) else Applicative[F].unit))
+      _ <- persist(cookies.traverse_(c => if (c.persist) persistence.updateLastAccessed(SnCookie.SnCookieKey.fromCookie(c),  c.lastAccessed) else Applicative[F].unit))
     } yield cookies.foldLeft(r){ case (r, c) => r.addCookie(SnCookie.toRequestCookie(c))}
     
   }

@@ -10,12 +10,14 @@ final class SnCookieJarBuilder[F[_]: Async] private (
   private val supervisorO: Option[Supervisor[F]],
   private val persistenceO: Option[Resource[F, SnCookiePersistence[F]]],
   private val isPublicSuffixO: Option[Resource[F, String => Boolean]],
-){ self => 
+  private val synchronousPersistence: Boolean,
+){ self =>
   def copy(
   supervisorO: Option[Supervisor[F]] = self.supervisorO,
   persistenceO: Option[Resource[F, SnCookiePersistence[F]]] = self.persistenceO,
-  isPublicSuffixO: Option[Resource[F, String => Boolean]] = self.isPublicSuffixO
-  ): SnCookieJarBuilder[F] = new SnCookieJarBuilder[F](supervisorO, persistenceO, isPublicSuffixO)
+  isPublicSuffixO: Option[Resource[F, String => Boolean]] = self.isPublicSuffixO,
+  synchronousPersistence: Boolean = self.synchronousPersistence
+  ): SnCookieJarBuilder[F] = new SnCookieJarBuilder[F](supervisorO, persistenceO, isPublicSuffixO, synchronousPersistence)
 
   def withSupervisor(s: Supervisor[F]) = copy(supervisorO = s.some)
 
@@ -23,6 +25,9 @@ final class SnCookieJarBuilder[F[_]: Async] private (
     copy(persistenceO = SnCookiePersistence.sqlite(path).some)
   def withPersistence(c: SnCookiePersistence[F]) = 
     copy(persistenceO = c.pure[Resource[F, *]].some)
+
+  def withSynchronousPersistence = copy(synchronousPersistence = true)
+  def withAsynchronousPersistence = copy(synchronousPersistence = false)
 
   def withoutPersistence = copy(persistenceO = None)
 
@@ -44,7 +49,7 @@ final class SnCookieJarBuilder[F[_]: Async] private (
       )
     )
     isPublicSuffix <- isPublicSuffixO.getOrElse({(_: String) => false}.pure[Resource[F, *]])
-    out = tO.fold[CookieJar[F]](new SnCookieJar.Http4sMemoryCookieJarImpl[F](state, isPublicSuffix)){ case (cp, s) => new SnCookieJar.Http4sPersistenceCookieJarImpl[F](cp, s, state, isPublicSuffix)}
+    out = tO.fold[CookieJar[F]](new SnCookieJar.Http4sMemoryCookieJarImpl[F](state, isPublicSuffix)){ case (cp, s) => new SnCookieJar.Http4sPersistenceCookieJarImpl[F](cp, s, synchronousPersistence, state, isPublicSuffix)}
     _ <- Resource.eval(out.evictExpired)
   } yield out
 
@@ -66,16 +71,17 @@ final class SnCookieJarBuilder[F[_]: Async] private (
         )
       )
       isPublicSuffix <- isPublicSuffixO.getOrElse({(_: String) => false}.pure[Resource[F, *]])
-      cj = tO.fold[CookieJar[F]](new SnCookieJar.Http4sMemoryCookieJarImpl[F](state, isPublicSuffix)){ case (cp, s) => new SnCookieJar.Http4sPersistenceCookieJarImpl[F](cp, s, state, isPublicSuffix)}
+      cj = tO.fold[CookieJar[F]](new SnCookieJar.Http4sMemoryCookieJarImpl[F](state, isPublicSuffix)){ case (cp, s) => new SnCookieJar.Http4sPersistenceCookieJarImpl[F](cp, s,  synchronousPersistence, state, isPublicSuffix)}
       _ <- Resource.eval(cj.evictExpired)
     } yield (cj, state)
   }
 }
 
 object SnCookieJarBuilder {
-  def default[F[_]: Async]: SnCookieJarBuilder[F] = new SnCookieJarBuilder[F](None, None, Defaults.isPublicSuffix)
+  def default[F[_]: Async]: SnCookieJarBuilder[F] = new SnCookieJarBuilder[F](None, None, Defaults.isPublicSuffix, Defaults.synchronousPersistence)
 
   private object Defaults extends SnCookieJarBuilderDefaultsPlaftom {
+    val synchronousPersistence = true
 
   }
 }
