@@ -20,7 +20,7 @@ ThisBuild / testFrameworks += new TestFramework("munit.Framework")
 ThisBuild / versionScheme := Some("early-semver")
 
 val catsV = "2.7.0"
-val catsEffectV = "3.3.13"
+val catsEffectV = "3.3.14"
 val fs2V = "3.2.7"
 val http4sV = "0.23.11"
 val doobieV = "1.0.0-RC2"
