@@ -65,7 +65,7 @@ lazy val core = crossProject(JVMPlatform, JSPlatform)
   ).jvmSettings(
     libraryDependencies ++= Seq(
       "org.tpolecat"  %% "doobie-core" % doobieV,
-      "org.xerial"    %  "sqlite-jdbc" % "3.36.0.3",
+      "org.xerial"    %  "sqlite-jdbc" % "3.44.1.0",
     )
   )
 
