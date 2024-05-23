@@ -25,7 +25,7 @@ val fs2V = "3.2.7"
 val http4sV = "0.23.11"
 val doobieV = "1.0.0-RC2"
 val publicSuffixV = "0.0.1"
-val munitCatsEffectV = "1.0.7"
+val munitCatsEffectV = "2.0.0"
 
 
 // Projects
@@ -49,7 +49,7 @@ lazy val core = crossProject(JVMPlatform, JSPlatform)
       "org.http4s"                  %%% "http4s-client"               % http4sV,
       "io.chrisdavenport"           %%% "publicsuffix"                  % publicSuffixV,
       "io.chrisdavenport"           %%% "publicsuffix-retrieval-client" % publicSuffixV % Test,
-      "org.typelevel"               %%% "munit-cats-effect-3"        % munitCatsEffectV         % Test,
+      "org.typelevel"               %%% "munit-cats-effect"        % munitCatsEffectV         % Test,
     )
   )
   .jsSettings(
