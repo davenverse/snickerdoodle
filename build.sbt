@@ -7,10 +7,9 @@ ThisBuild / developers := List(
   tlGitHubDev("christopherdavenport", "Christopher Davenport")
 )
 ThisBuild / tlCiReleaseBranches := Seq("main")
-ThisBuild / tlSonatypeUseLegacyHost := true
 
-val Scala213 = "2.13.7"
-val Scala3 = "3.1.1"
+val Scala213 = "2.13.18"
+val Scala3 = "3.3.8"
 
 ThisBuild / crossScalaVersions := Seq(Scala213, Scala3)
 ThisBuild / scalaVersion := Scala213
