@@ -6,11 +6,10 @@ ThisBuild / licenses := Seq(License.MIT)
 ThisBuild / developers := List(
   tlGitHubDev("christopherdavenport", "Christopher Davenport")
 )
-ThisBuild / tlCiReleaseBranches := Seq("main")
-ThisBuild / tlSonatypeUseLegacyHost := true
+ThisBuild / tlCiReleaseBranches := Seq()
 
-val Scala213 = "2.13.7"
-val Scala3 = "3.1.1"
+val Scala213 = "2.13.18"
+val Scala3 = "3.3.8"
 
 ThisBuild / crossScalaVersions := Seq(Scala213, Scala3)
 ThisBuild / scalaVersion := Scala213
@@ -88,6 +87,13 @@ lazy val examples = crossProject(JVMPlatform, JSPlatform)
 
 lazy val site = project.in(file("site"))
   .enablePlugins(TypelevelSitePlugin)
+  .settings(
+    laikaTheme := tlSiteHelium.value.site
+      .topNavigationBar(
+        homeLink = laika.helium.config.IconLink.internal(laika.ast.Path.Root / "index.md", laika.helium.config.HeliumIcon.home)
+      )
+      .build
+  )
   .dependsOn(core.jvm)
   .settings(
     libraryDependencies ++= Seq(
