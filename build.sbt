@@ -7,10 +7,9 @@ ThisBuild / developers := List(
   tlGitHubDev("christopherdavenport", "Christopher Davenport")
 )
 ThisBuild / tlCiReleaseBranches := Seq("main")
-ThisBuild / tlSonatypeUseLegacyHost := true
 
-val Scala213 = "2.13.7"
-val Scala3 = "3.1.1"
+val Scala213 = "2.13.18"
+val Scala3 = "3.3.8"
 
 ThisBuild / crossScalaVersions := Seq(Scala213, Scala3)
 ThisBuild / scalaVersion := Scala213
@@ -19,13 +18,13 @@ ThisBuild / testFrameworks += new TestFramework("munit.Framework")
 
 ThisBuild / versionScheme := Some("early-semver")
 
-val catsV = "2.7.0"
-val catsEffectV = "3.3.13"
-val fs2V = "3.2.7"
-val http4sV = "0.23.11"
+val catsV = "2.13.0"
+val catsEffectV = "3.7.1"
+val fs2V = "3.14.0"
+val http4sV = "0.23.37"
 val doobieV = "1.0.0-RC2"
 val publicSuffixV = "0.0.1"
-val munitCatsEffectV = "1.0.7"
+val munitCatsEffectV = "2.2.1"
 
 
 // Projects
@@ -49,7 +48,7 @@ lazy val core = crossProject(JVMPlatform, JSPlatform)
       "org.http4s"                  %%% "http4s-client"               % http4sV,
       "io.chrisdavenport"           %%% "publicsuffix"                  % publicSuffixV,
       "io.chrisdavenport"           %%% "publicsuffix-retrieval-client" % publicSuffixV % Test,
-      "org.typelevel"               %%% "munit-cats-effect-3"        % munitCatsEffectV         % Test,
+      "org.typelevel"               %%% "munit-cats-effect"        % munitCatsEffectV         % Test,
     )
   )
   .jsSettings(
